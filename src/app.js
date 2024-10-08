@@ -11,6 +11,8 @@ function refreshWeather(response) {
 
   iconElement.innerHTML = `<img src="${response.data.condition.icon_url}" class="weather-app-icon" />`;
 
+  getForecast(response.data.city);
+
   cityElement.innerHTML = response.data.city;
   timeElement.innerHTML = formatDate(date);
   descriptionElement.innerHTML = response.data.condition.description;
@@ -53,7 +55,15 @@ function handleSearchSubmit(event) {
   searchCity(searchInput.value);
 }
 
-function displayForecast() {
+function getForecast(city) {
+  let apiKey = "6aft364472o336ce0605fa2d20af6b09";
+  let aipUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  axios(aipUrl).then(displayForecast);
+}
+
+function displayForecast(response) {
+  console.log(response.data);
+
   let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
   let forecastHtml = "";
 
@@ -80,5 +90,4 @@ function displayForecast() {
 let searchformElement = document.querySelector("#search-form");
 searchformElement.addEventListener("submit", handleSearchSubmit);
 searchCity("Johannesburg");
-
 displayForecast();
